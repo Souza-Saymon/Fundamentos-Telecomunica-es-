@@ -1,0 +1,160 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def plot_graph(signal, modulated_signal, modulation_type):
+    # Plot da Informação Digital
+    plt.figure(figsize=(12, 6))
+
+    plt.subplot(2, 1, 1)
+    plt.title("Informação Digital")
+    plt.plot(signal, drawstyle='steps-pre', label="Sinal Digital")
+    plt.xlabel("Tempo")
+    plt.ylabel("Amplitude")
+    plt.grid()
+    plt.legend()
+
+    # Plot do Sinal Modulado
+    plt.subplot(2, 1, 2)
+    plt.title(f"Modulação {modulation_type.upper()}")
+    plt.plot(modulated_signal, label=f"Sinal Modulado ({modulation_type.upper()})")
+    plt.xlabel("Tempo")
+    plt.ylabel("Amplitude")
+    plt.grid()
+    plt.legend()
+
+    plt.tight_layout()
+    plt.show()
+
+def ask_modulation(bits):
+    t = np.linspace(0, 1, 100, endpoint=False)  # tempo
+    signal = np.repeat([int(b) for b in bits], 100)
+    carrier = np.sin(2 * np.pi * 10 * t)  # portadora
+    modulated_signal = np.repeat([int(b) * carrier for b in bits], 100, axis=0).flatten()
+    return signal, modulated_signal
+
+def fsk_modulation(bits):
+    t = np.linspace(0, 1, 100, endpoint=False)  # tempo
+    signal = np.repeat([int(b) for b in bits], 100)
+    carrier_low = np.sin(2 * np.pi * 5 * t)  # frequência baixa
+    carrier_high = np.sin(2 * np.pi * 10 * t)  # frequência alta
+    modulated_signal = np.concatenate([
+        carrier_low if b == '0' else carrier_high for b in bits
+    ])
+    return signal, modulated_signal
+
+def psk_modulation(bits):
+    t = np.linspace(0, 1, 100, endpoint=False)  # tempo
+    signal = np.repeat([int(b) for b in bits], 100)
+    carrier = np.sin(2 * np.pi * 10 * t)  # portadora
+    modulated_signal = np.concatenate([
+        carrier if b == '1' else -carrier for b in bits
+    ])
+    return signal, modulated_signal
+
+def main():
+    # Solicitar entrada do usuário
+    bits = input("Digite uma palavra de 8 bits (ex: 10110100): ")
+    if len(bits) != 8 or not set(bits).issubset({'0', '1'}):
+        print("Entrada inválida. Insira exatamente 8 bits (0s e 1s).")
+        return
+
+    print("Escolha o tipo de modulação:")
+    print("1. ASK")
+    print("2. FSK")
+    print("3. PSK")
+    choice = input("Digite o número correspondente (1/2/3): ")
+
+    if choice == '1':
+        signal, modulated_signal = ask_modulation(bits)
+        plot_graph(signal, modulated_signal, "ASK")
+    elif choice == '2':
+        signal, modulated_signal = fsk_modulation(bits)
+        plot_graph(signal, modulated_signal, "FSK")
+    elif choice == '3':
+        signal, modulated_signal = psk_modulation(bits)
+        plot_graph(signal, modulated_signal, "PSK")
+    else:
+        print("Escolha inválida. Tente novamente.")
+
+if __name__ == "__main__":
+    main()
+import numpy as np
+import matplotlib.pyplot as plt
+
+def plot_graph(signal, modulated_signal, modulation_type):
+    # Plot da Informação Digital
+    plt.figure(figsize=(12, 6))
+
+    plt.subplot(2, 1, 1)
+    plt.title("Informação Digital")
+    plt.plot(signal, drawstyle='steps-pre', label="Sinal Digital")
+    plt.xlabel("Tempo")
+    plt.ylabel("Amplitude")
+    plt.grid()
+    plt.legend()
+
+    # Plot do Sinal Modulado
+    plt.subplot(2, 1, 2)
+    plt.title(f"Modulação {modulation_type.upper()}")
+    plt.plot(modulated_signal, label=f"Sinal Modulado ({modulation_type.upper()})")
+    plt.xlabel("Tempo")
+    plt.ylabel("Amplitude")
+    plt.grid()
+    plt.legend()
+
+    plt.tight_layout()
+    plt.show()
+
+def ask_modulation(bits):
+    t = np.linspace(0, 1, 100, endpoint=False)  # tempo
+    signal = np.repeat([int(b) for b in bits], 100)
+    carrier = np.sin(2 * np.pi * 10 * t)  # portadora
+    modulated_signal = np.repeat([int(b) * carrier for b in bits], 100, axis=0).flatten()
+    return signal, modulated_signal
+
+def fsk_modulation(bits):
+    t = np.linspace(0, 1, 100, endpoint=False)  # tempo
+    signal = np.repeat([int(b) for b in bits], 100)
+    carrier_low = np.sin(2 * np.pi * 5 * t)  # frequência baixa
+    carrier_high = np.sin(2 * np.pi * 10 * t)  # frequência alta
+    modulated_signal = np.concatenate([
+        carrier_low if b == '0' else carrier_high for b in bits
+    ])
+    return signal, modulated_signal
+
+def psk_modulation(bits):
+    t = np.linspace(0, 1, 100, endpoint=False)  # tempo
+    signal = np.repeat([int(b) for b in bits], 100)
+    carrier = np.sin(2 * np.pi * 10 * t)  # portadora
+    modulated_signal = np.concatenate([
+        carrier if b == '1' else -carrier for b in bits
+    ])
+    return signal, modulated_signal
+
+def main():
+    # Solicitar entrada do usuário
+    bits = input("Digite uma palavra de 8 bits (ex: 10110100): ")
+    if len(bits) != 8 or not set(bits).issubset({'0', '1'}):
+        print("Entrada inválida. Insira exatamente 8 bits (0s e 1s).")
+        return
+
+    print("Escolha o tipo de modulação:")
+    print("1. ASK")
+    print("2. FSK")
+    print("3. PSK")
+    choice = input("Digite o número correspondente (1/2/3): ")
+
+    if choice == '1':
+        signal, modulated_signal = ask_modulation(bits)
+        plot_graph(signal, modulated_signal, "ASK")
+    elif choice == '2':
+        signal, modulated_signal = fsk_modulation(bits)
+        plot_graph(signal, modulated_signal, "FSK")
+    elif choice == '3':
+        signal, modulated_signal = psk_modulation(bits)
+        plot_graph(signal, modulated_signal, "PSK")
+    else:
+        print("Escolha inválida. Tente novamente.")
+
+if __name__ == "__main__":
+    main()
