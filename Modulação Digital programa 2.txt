@@ -1,0 +1,59 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def add_noise(signal, noise_level):
+    """Adiciona ruído gaussiano ao sinal"""
+    noise = np.random.normal(0, noise_level, signal.shape)
+    return signal + noise
+
+def plot_constellation(signal, title):
+    """Plota o diagrama de constelação"""
+    plt.figure(figsize=(6, 6))
+    plt.scatter(np.real(signal), np.imag(signal), color='blue', alpha=0.7)
+    plt.axhline(0, color='black', linewidth=0.8)
+    plt.axvline(0, color='black', linewidth=0.8)
+    plt.grid(True)
+    plt.title(title)
+    plt.xlabel("In-Phase")
+    plt.ylabel("Quadrature")
+    plt.show()
+
+def generate_8psk():
+    """Gera símbolos para 8-PSK"""
+    angles = np.linspace(0, 2 * np.pi, 8, endpoint=False)
+    return np.exp(1j * angles)
+
+def generate_16qam():
+    """Gera símbolos para 16-QAM"""
+    re = np.array([-3, -1, 1, 3])
+    im = np.array([-3, -1, 1, 3])
+    re, im = np.meshgrid(re, im)
+    return (re + 1j * im).flatten()
+
+def main():
+    print("Escolha a modulação para gerar o diagrama de constelação:")
+    print("1. 8-PSK")
+    print("2. 16-QAM")
+    choice = input("Digite o número correspondente (1/2): ")
+
+    if choice == '1':
+        symbols = generate_8psk()
+        title = "Diagrama de Constelação: 8-PSK"
+    elif choice == '2':
+        symbols = generate_16qam()
+        title = "Diagrama de Constelação: 16-QAM"
+    else:
+        print("Escolha inválida.")
+        return
+
+    # Exibe o diagrama sem ruído
+    plot_constellation(symbols, f"{title} (Sem Ruído)")
+
+    # Adiciona ruído com diferentes níveis e exibe os diagramas
+    noise_levels = [0.1, 0.5, 1.0]  # diferentes intensidades de ruído
+    for noise_level in noise_levels:
+        noisy_symbols = add_noise(symbols, noise_level)
+        plot_constellation(noisy_symbols, f"{title} (Ruído: {noise_level})")
+
+if __name__ == "__main__":
+    main()
